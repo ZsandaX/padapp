@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style>
+    .ui-panel-wrapper {
+        background-image: url(bg.jpg);
+    }
+    
+    .time {
+        background-image: url(bottom_menu_back.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        border: #622a1d solid 1px;
+        font-size: 1.5em;
+        color: white;
+    }
+    
+    .left {
+        clear: left;
+    }
+    
+    .left,
+    .right {
+        background-image: url(gb.jpg);
+        float: left;
+        width: calc(50% - 6px);
+        border: #3E2413 solid 3px;
+        margin: 3px;
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 6px;
+    }
+    
+    .title {
+        background-image: url(bottom_menu_back.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        color: #9ed900;
+        text-align: center;
+    }
+    </style>
+    <script>
+    var array = new Array();
+    $(function() {
+        $('div:contains("Sponsored By")').remove();
+        $('#enter').click(function(event) {
+            $.ajax({
+                url: 'load.php',
+                type: 'POST',
+                dataType: 'json',
+                data: $('#formpost').serialize(),
+                success: function(result) {
+                    $('.ui-content').html('<div class="ui-grid-a"></div>');
+                    for (var i = 0; i < result[0].length; i++) {
+                        if (i % 2 == 0) {
+                            var a = '<div class="left"><div class="title">' + result[0][i] + '</div><a href="http://pad.skyozora.com/stage/';
+                        } else {
+                            var a = '<div class="right"><div class="title">' + result[0][i] + '</div><a href="http://pad.skyozora.com/stage/';
+                        }
+                        $('.ui-grid-a').append(a + result[0][i] + '"><img src="' + result[2][i] + '"></a><div class="time">' + result[1][i] + '<div></div>');
+                    }
+                }
+            });
+        });
+    });
+
+    </script>
+</head>
+
+<body>
+    <div data-role="page">
+        <div data-role="panel" id="myPanel">
+            <h2>組別</h2>
+            <form id="formpost">
+                <fieldset data-role="controlgroup">
+                    <label for="A">A</label>
+                    <input type="radio" name="group" id="A" value="A">
+                    <label for="B">B</label>
+                    <input type="radio" name="group" id="B" value="B">
+                    <label for="C">C</label>
+                    <input type="radio" name="group" id="C" value="C">
+                    <label for="D">D</label>
+                    <input type="radio" name="group" id="D" value="D">
+                    <label for="E">E</label>
+                    <input type="radio" name="group" id="E" value="E">
+                </fieldset>
+                <a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all" id="enter">確認</a>
+            </form>
+        </div>
+        <div data-role="header" data-position="fixed">
+            <a href="#myPanel" class="ui-btn ui-overlay-shadow ui-corner-all ui-icon-edit ui-btn-icon-notext">組別</a>
+            <h1>PAD 提醒！</h1>
+            <a href="#" data-role="button" id="test">TEST</a>
+        </div>
+        <div data-role="main" class="ui-content">
+        </div>
+    </div>
+</body>
+
+</html>
